@@ -1,6 +1,6 @@
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "20.8.4"
+  version         = "20.13.1"
   cluster_name    = local.cluster_name
   cluster_version = var.kubernetes_version
   subnet_ids      = module.vpc.private_subnets
@@ -8,7 +8,7 @@ module "eks" {
   enable_irsa = true
 
   tags = {
-    cluster = "demo"
+    cluster = "test"
   }
 
   vpc_id = module.vpc.vpc_id
@@ -39,29 +39,6 @@ resource "aws_iam_user_policy_attachment" "eks_admin_user_policy" {
 }
 
 resource "aws_eks_access_entry" "oklen-eks-gjm9k6zu" {
-  cluster_name = "oklen-eks-gjm9k6zu"
+  cluster_name = "oklen-eks-HETf4Yk7"
   principal_arn = aws_iam_user.eks_admin_user.arn
 }
-
-
-/*
-# Attach EKS Admin Policy to User
-resource "aws_iam_user_policy_attachment" "eks_admin_user_policy" {
-  user       = "arn:aws:iam::498543162511:user/AdministratorForLabs"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterAdmin"
-}
-
-# EKS Access Entry referencing IAM User with Admin Policy
-resource "aws_eks_access_entry" "oklen-eks-7MZX7PLp" {
-  cluster_name = "oklen-eks-7MZX7PLp"
-  principal_arn = "arn:aws:iam::498543162511:user/AdministratorForLabs"
-}
-
-resource "aws_eks_access_entry" "oklen-eks-7MZX7PLp" {
-  cluster_name       = "oklen-eks-7MZX7PLp"
-  principal_arn      = "arn:aws:iam::498543162511:user/AdministratorForLabs"
-}
-
-https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
-
-*/
